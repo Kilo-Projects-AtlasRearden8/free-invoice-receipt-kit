@@ -18,8 +18,8 @@
   <p class="small">Record every business trip: date, purpose, start and end addresses (or odometer), miles, and your standard mileage rate.</p>
 
   <div class="field" style="max-width:320px;">
-    <label>Standard mileage rate ($/mile)</label>
-    <input type="number" id="rate" min="0" step="0.01" value="0.70">
+    <label for="mileage-rate">Standard mileage rate ($/mile)</label>
+    <input type="number" id="mileage-rate" min="0" step="0.01" value="0.70">
   </div>
 
   <table id="log">
@@ -42,14 +42,44 @@
         <td><input type="text" placeholder="Client site visit"></td>
         <td><input type="text" placeholder="Home / office"></td>
         <td><input type="text" placeholder="Destination"></td>
-        <td class="text-right"><input type="number" min="0" step="0.1" value="0"></td>
+        <td class="text-right"><input type="number" min="0" step="0.1" value=""></td>
+        <td class="text-right"><span class="value">$0.00</span></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">2</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.1" value=""></td>
+        <td class="text-right"><span class="value">$0.00</span></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">3</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.1" value=""></td>
+        <td class="text-right"><span class="value">$0.00</span></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">4</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.1" value=""></td>
         <td class="text-right"><span class="value">$0.00</span></td>
         <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
       </tr>
     </tbody>
   </table>
 
-  <p class="small add-row">Tip: add rows before printing, or print blank rows for handwritten logs.</p>
+  <p class="small add-row">Tip: add more rows before printing, or print the blank rows to fill in by hand.</p>
   <button type="button" class="primary no-print" onclick="addRow()">&#x271a; Add trip row</button>
 
   <div class="totals">
@@ -84,10 +114,14 @@ const RATE_DEFAULT = 0.70;
 
 function money(v) { return '$' + Number(v || 0).toFixed(2); }
 
+function blankValue(v) { return v === '' ? '' : Number(v || 0); }
+
 function calcRow(row) {
-  const miles = Number(row.querySelector('td:nth-child(6) input').value) || 0;
-  const rate = Number(document.getElementById('rate').value) || RATE_DEFAULT;
-  row.querySelector('td:nth-child(7) .value').textContent = money(miles * rate);
+  const miles = blankValue(row.querySelector('td:nth-child(6) input').value);
+  const rate = Number(document.getElementById('mileage-rate').value) || RATE_DEFAULT;
+  const deductionCell = row.querySelector('td:nth-child(7) .value');
+  if (miles === '') { deductionCell.textContent = '$0.00'; return 0; }
+  deductionCell.textContent = money(miles * rate);
   return miles;
 }
 
@@ -97,12 +131,12 @@ function calcTotals() {
     row.querySelector('td:nth-child(1)').textContent = i + 1;
     miles += calcRow(row);
   });
-  const rate = Number(document.getElementById('rate').value) || RATE_DEFAULT;
-  document.getElementById('total-miles').textContent = miles.toString(miles % 1 === 0 ? 0 : 1);
+  const rate = Number(document.getElementById('mileage-rate').value) || RATE_DEFAULT;
+  document.getElementById('total-miles').textContent = miles % 1 === 0 ? String(miles) : miles.toFixed(1);
   document.getElementById('total-deduction').textContent = money(miles * rate);
 }
 
-document.querySelectorAll('#log input, #rate').forEach(input => {
+document.querySelectorAll('#log input, #mileage-rate').forEach(input => {
   input.addEventListener('input', calcTotals);
 });
 
@@ -112,10 +146,10 @@ function addRow() {
   tr.innerHTML = `
     <td class="text-center"></td>
     <td><input type="date"></td>
-    <td><input type="text" placeholder="Purpose"></td>
-    <td><input type="text" placeholder="Start"></td>
-    <td><input type="text" placeholder="End"></td>
-    <td class="text-right"><input type="number" min="0" step="0.1" value="0"></td>
+    <td><input type="text" placeholder=""></td>
+    <td><input type="text" placeholder=""></td>
+    <td><input type="text" placeholder=""></td>
+    <td class="text-right"><input type="number" min="0" step="0.1" value=""></td>
     <td class="text-right"><span class="value">$0.00</span></td>
     <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
   `;

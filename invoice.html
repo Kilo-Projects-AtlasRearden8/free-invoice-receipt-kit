@@ -17,28 +17,28 @@
   <h2>&#x1F4CE; Invoice details</h2>
   <div class="grid">
     <div class="field full">
-      <label>From (your business)</label>
-      <input type="text" placeholder="Asdale Dynamics, LLC &mdash; your business name">
+      <label for="from">From (your business)</label>
+      <input type="text" id="from" placeholder="Asdale Dynamics, LLC &mdash; your business name">
     </div>
     <div class="field">
-      <label>Invoice #</label>
-      <input type="text" placeholder="INV-001">
+      <label for="invoice-number">Invoice #</label>
+      <input type="text" id="invoice-number" placeholder="INV-001">
     </div>
     <div class="field">
-      <label>Date issued</label>
-      <input type="date">
+      <label for="date-issued">Date issued</label>
+      <input type="date" id="date-issued">
     </div>
     <div class="field">
-      <label>Due date</label>
-      <input type="date">
+      <label for="due-date">Due date</label>
+      <input type="date" id="due-date">
     </div>
     <div class="field full">
-      <label>Bill to (client)</label>
-      <input type="text" placeholder="Client name">
+      <label for="client">Bill to (client)</label>
+      <input type="text" id="client" placeholder="Client name">
     </div>
     <div class="field full">
-      <label>Client email</label>
-      <input type="email" placeholder="client@example.com">
+      <label for="client-email">Client email</label>
+      <input type="email" id="client-email" placeholder="client@example.com">
     </div>
   </div>
 </div>
@@ -65,9 +65,33 @@
         <td class="text-right"><input type="number" min="0" step="0.01" readonly value="0.00"></td>
         <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
       </tr>
+      <tr>
+        <td class="text-center">2</td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="1" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" readonly value=""></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">3</td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="1" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" readonly value=""></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">4</td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="1" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" readonly value=""></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
     </tbody>
   </table>
-  <p class="small add-row">Tip: add rows before printing. Empty rows print blank for handwritten entries.</p>
+  <p class="small add-row">Tip: add more rows before printing, or print the blank rows to fill in by hand.</p>
   <button type="button" class="primary no-print" onclick="addRow()">&#x271a; Add line item</button>
 
   <div class="totals">
@@ -94,21 +118,21 @@
   <h2>&#x1F4B7; Payment &amp; notes</h2>
   <div class="grid">
     <div class="field">
-      <label>Payment method</label>
-      <input type="text" placeholder="ACH / Check / PayPal / Stripe">
+      <label for="payment-method">Payment method</label>
+      <input type="text" id="payment-method" placeholder="ACH / Check / PayPal / Stripe">
     </div>
     <div class="field">
-      <label>Payable to</label>
-      <input type="text" placeholder="Business name for checks">
+      <label for="payable-to">Payable to</label>
+      <input type="text" id="payable-to" placeholder="Business name for checks">
     </div>
     <div class="field">
-      <label>Terms</label>
-      <input type="text" placeholder="Due upon receipt / Net 15 / Net 30">
+      <label for="terms">Terms</label>
+      <input type="text" id="terms" placeholder="Due upon receipt / Net 15 / Net 30">
     </div>
   </div>
   <div class="field full">
-    <label>Notes / memo</label>
-    <textarea placeholder="Thank you for your business! Questions? Reply to this email."></textarea>
+    <label for="notes">Notes / memo</label>
+    <textarea id="notes" placeholder="Thank you for your business! Questions? Reply to this email."></textarea>
   </div>
 </div>
 
@@ -124,11 +148,15 @@
 <script>
 function money(v) { return '$' + Number(v || 0).toFixed(2); }
 
+function blankValue(v) { return v === '' ? '' : Number(v || 0); }
+
 function calcRow(row) {
-  const qty = Number(row.querySelector('td:nth-child(3) input').value) || 0;
-  const rate = Number(row.querySelector('td:nth-child(4) input').value) || 0;
+  const qty = blankValue(row.querySelector('td:nth-child(3) input').value);
+  const rate = blankValue(row.querySelector('td:nth-child(4) input').value);
+  const amtInput = row.querySelector('td:nth-child(5) input');
+  if (qty === '' || rate === '') { amtInput.value = ''; return 0; }
   const amt = qty * rate;
-  row.querySelector('td:nth-child(5) input').value = amt;
+  amtInput.value = money(amt);
   return amt;
 }
 
@@ -155,10 +183,10 @@ function addRow() {
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td class="text-center"></td>
-    <td><input type="text" placeholder="Description"></td>
-    <td class="text-right"><input type="number" min="0" step="1" value="1"></td>
-    <td class="text-right"><input type="number" min="0" step="0.01" value="0.00"></td>
-    <td class="text-right"><input type="number" min="0" step="0.01" readonly value="0.00"></td>
+    <td><input type="text" placeholder=""></td>
+    <td class="text-right"><input type="number" min="0" step="1" value=""></td>
+    <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+    <td class="text-right"><input type="number" min="0" step="0.01" readonly value=""></td>
     <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
   `;
   tbody.appendChild(tr);

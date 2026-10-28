@@ -36,15 +36,45 @@
         <td><input type="date"></td>
         <td><input type="text" placeholder="Vendor / store"></td>
         <td><input type="text" placeholder="What was purchased"></td>
-        <td class="text-right"><input type="number" min="0" step="0.01" value="0.00"></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
         <td><input type="text" placeholder="Office supplies"></td>
         <td><input type="text" placeholder="Card / cash"></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">2</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">3</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+      <tr>
+        <td class="text-center">4</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+        <td><input type="text" placeholder=""></td>
+        <td><input type="text" placeholder=""></td>
         <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
       </tr>
     </tbody>
   </table>
 
-  <p class="small add-row">Tip: add rows before printing, or print blank rows to fill in by hand.</p>
+  <p class="small add-row">Tip: add more rows before printing, or print the blank rows to fill in by hand.</p>
   <button type="button" class="primary no-print" onclick="addRow()">&#x271a; Add receipt row</button>
 
   <div class="totals" style="justify-content:flex-end;">
@@ -59,16 +89,16 @@
   <h2>&#x1F4CC; Year-to-date summary (fill in at tax time)</h2>
   <div class="grid">
     <div class="field">
-      <label>Total business spend</label>
-      <input type="number" min="0" step="0.01" value="0.00">
+      <label for="ytd-total">Total business spend</label>
+      <input type="number" id="ytd-total" min="0" step="0.01" value="0.00">
     </div>
     <div class="field">
-      <label>Tax year</label>
-      <input type="text" value="2026">
+      <label for="tax-year">Tax year</label>
+      <input type="text" id="tax-year" value="2026">
     </div>
     <div class="field full">
-      <label>Notes</label>
-      <textarea placeholder="Notes for your bookkeeper or tax preparer"></textarea>
+      <label for="ytd-notes">Notes</label>
+      <textarea id="ytd-notes" placeholder="Notes for your bookkeeper or tax preparer"></textarea>
     </div>
   </div>
 </div>
@@ -104,11 +134,11 @@ function addRow() {
   tr.innerHTML = `
     <td class="text-center"></td>
     <td><input type="date"></td>
-    <td><input type="text" placeholder="Vendor / store"></td>
-    <td><input type="text" placeholder="What was purchased"></td>
-    <td class="text-right"><input type="number" min="0" step="0.01" value="0.00"></td>
-    <td><input type="text" placeholder="Office supplies"></td>
-    <td><input type="text" placeholder="Card / cash"></td>
+    <td><input type="text" placeholder=""></td>
+    <td><input type="text" placeholder=""></td>
+    <td class="text-right"><input type="number" min="0" step="0.01" value=""></td>
+    <td><input type="text" placeholder=""></td>
+    <td><input type="text" placeholder=""></td>
     <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
   `;
   tbody.appendChild(tr);

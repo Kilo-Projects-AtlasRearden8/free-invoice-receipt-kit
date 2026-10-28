@@ -1,37 +1,49 @@
 # Free Invoice & Receipt Kit
 
-Fillable, printable, no-account-needed small-business paperwork for freelancers and
-small businesses, published by **Asdale Dynamics, LLC** (Indiana).
+Fillable, printable, no-account-needed paperwork for freelancers and small
+businesses. Published by **Asdale Dynamics, LLC** (Indiana).
+
+## Who this is for
+
+Freelancers, side-hustlers, authors, and small-business owners who need simple,
+professional forms without creating an account, handing over an email, or
+paying a subscription. Everything runs locally in your browser &mdash; nothing
+is uploaded, stored, or tracked.
+
+If you're new to this, welcome. These forms are plain English and step by step,
+the way Asdale Dynamics, LLC likes to teach: clear, warm, never condescending.
 
 ## What's inside
 
 | File | What it does |
 |------|--------------|
-| `invoice.html` / `invoice.md` | Fillable invoice with line items, tax, totals, and client/business fields |
+| `invoice.html` / `invoice.md` | Fillable invoice with client/business fields, line items, tax, and auto-calculating totals |
 | `receipt-log.html` / `receipt-log.md` | Running log of receipts: date, vendor, amount, category, payment method |
 | `mileage-tracker.html` / `mileage-tracker.md` | Business mileage log: date, purpose, start/end, miles, rate, deduction |
-| `expense-categories.html` / `expense-categories.md` | Printable reference of common small-business expense categories |
-| `styles.css` | Shared print-first styles (screen-friendly, clean print output) |
+| `expense-categories.html` / `expense-categories.md` | Printable reference of common small-business expense categories plus a blank monthly log |
+| `styles.css` | Shared print-first styles &mdash; screen-friendly forms, clean printed output |
 
 ## How to use
 
 1. Open any `.html` file in your browser (Chrome, Firefox, Edge, Safari).
-2. Fill in the fields on screen.
-3. Press `Ctrl+P` / `Cmd+P` and print, or "Save as PDF." Print styles strip screen-only
-   controls so only the form prints.
-4. No account, no signup, no data sent anywhere. Everything runs locally in your browser.
+2. Fill in the fields on screen. Totals calculate automatically.
+3. Press `Ctrl+P` / `Cmd+P` and print, or choose "Save as PDF." Print styles hide
+   buttons and controls so only the form prints.
+4. The `.md` files are plain-text copies you can print from any Markdown renderer
+   or keep for your own records.
 
-## Markdown versions
+No account, no signup, no data sent anywhere. Local-first by design.
 
-Each `.md` file is a plain-text, printable-friendly copy of the same form. Use them for
-notes, version control, or printing from any Markdown renderer.
+## About Asdale Dynamics, LLC
 
-## About
+Asdale Dynamics, LLC is a beginner-friendly AI education and practical-tools
+studio founded by Dylan Asdale, a registered nurse turned AI author based in
+Indiana. The LLC publishes plain English AI manuals, open-source templates, and
+small-business helpers like this kit. Dylan's book *The Massive AI Manual* and
+hub site dylanasdale.github.io explain AI "like a friend would."
 
-Asdale Dynamics, LLC is a beginner-friendly AI education and practical-tools studio
-founded by Dylan Asdale, a registered nurse turned AI author. The LLC publishes plain
-English AI manuals, open-source templates, and small-business helpers like this kit.
-Learn more at dylanasdale.github.io.
+This kit is part of the LLC's small-business and author tools line, alongside
+bookkeeping, KDP/publishing, marketing, and reselling resources.
 
 ## License
 
