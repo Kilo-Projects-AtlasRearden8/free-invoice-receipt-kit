@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mileage tracker - Free Invoice & Receipt Kit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Mileage tracker</h1>
+  <p class="subtitle">Fillable &bull; printable &bull; no account needed &mdash; Asdale Dynamics, LLC</p>
+</header>
+
+<div class="card">
+  <h2>&#x1F697; Log business miles</h2>
+  <p class="small">Record every business trip: date, purpose, start and end addresses (or odometer), miles, and your standard mileage rate.</p>
+
+  <div class="field" style="max-width:320px;">
+    <label>Standard mileage rate ($/mile)</label>
+    <input type="number" id="rate" min="0" step="0.01" value="0.70">
+  </div>
+
+  <table id="log">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Purpose</th>
+        <th>Start</th>
+        <th>End</th>
+        <th class="text-right">Miles</th>
+        <th class="text-right">Deduction</th>
+        <th style="width:40px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder="Client site visit"></td>
+        <td><input type="text" placeholder="Home / office"></td>
+        <td><input type="text" placeholder="Destination"></td>
+        <td class="text-right"><input type="number" min="0" step="0.1" value="0"></td>
+        <td class="text-right"><span class="value">$0.00</span></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="small add-row">Tip: add rows before printing, or print blank rows for handwritten logs.</p>
+  <button type="button" class="primary no-print" onclick="addRow()">&#x271a; Add trip row</button>
+
+  <div class="totals">
+    <div class="item grand">
+      <span class="label">Total miles / deduction</span>
+      <span class="value"><span id="total-miles">0</span> mi &nbsp;|&nbsp; <span id="total-deduction">$0.00</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>&#x1F4C8; Quick reference</h2>
+  <ul class="small" style="margin:8px 0 0; padding-left:20px; color:var(--muted); line-height:1.7;">
+    <li>Deduction = miles &times; standard mileage rate</li>
+    <li>Keep odometer photos or a dated log as backup for each trip</li>
+    <li>Commuting between home and a regular workplace is generally not deductible</li>
+    <li>Ask your tax preparer which rate and rules apply to your situation</li>
+  </ul>
+</div>
+
+<footer class="no-print">
+  <p class="footer-note">Generated locally in your browser &mdash; nothing is sent anywhere. Print (Ctrl+P / Cmd+P) or save as PDF.</p>
+  <p class="footer-note small">Free Invoice &amp; Receipt Kit &mdash; Asdale Dynamics, LLC. MIT License. Education only, not tax advice.</p>
+</footer>
+
+<div class="controls no-print">
+  <button type="button" class="primary" onclick="window.print()">&#x1F5A8; Print mileage tracker</button>
+</div>
+
+<script>
+const RATE_DEFAULT = 0.70;
+
+function money(v) { return '$' + Number(v || 0).toFixed(2); }
+
+function calcRow(row) {
+  const miles = Number(row.querySelector('td:nth-child(6) input').value) || 0;
+  const rate = Number(document.getElementById('rate').value) || RATE_DEFAULT;
+  row.querySelector('td:nth-child(7) .value').textContent = money(miles * rate);
+  return miles;
+}
+
+function calcTotals() {
+  let miles = 0;
+  document.querySelectorAll('#log tbody tr').forEach((row, i) => {
+    row.querySelector('td:nth-child(1)').textContent = i + 1;
+    miles += calcRow(row);
+  });
+  const rate = Number(document.getElementById('rate').value) || RATE_DEFAULT;
+  document.getElementById('total-miles').textContent = miles.toString(miles % 1 === 0 ? 0 : 1);
+  document.getElementById('total-deduction').textContent = money(miles * rate);
+}
+
+document.querySelectorAll('#log input, #rate').forEach(input => {
+  input.addEventListener('input', calcTotals);
+});
+
+function addRow() {
+  const tbody = document.querySelector('#log tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="text-center"></td>
+    <td><input type="date"></td>
+    <td><input type="text" placeholder="Purpose"></td>
+    <td><input type="text" placeholder="Start"></td>
+    <td><input type="text" placeholder="End"></td>
+    <td class="text-right"><input type="number" min="0" step="0.1" value="0"></td>
+    <td class="text-right"><span class="value">$0.00</span></td>
+    <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+  `;
+  tbody.appendChild(tr);
+  tr.querySelectorAll('input').forEach(input => input.addEventListener('input', calcTotals));
+  tr.querySelector('input[type="text"]').focus();
+  calcTotals();
+}
+
+function removeRow(btn) {
+  const tr = btn.closest('tr');
+  const tbody = document.querySelector('#log tbody');
+  if (tbody.rows.length > 1) tr.remove();
+  calcTotals();
+}
+
+calcTotals();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receipt Log - Free Invoice & Receipt Kit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>Receipt log</h1>
+  <p class="subtitle">Fillable &bull; printable &bull; no account needed &mdash; Asdale Dynamics, LLC</p>
+</header>
+
+<div class="card">
+  <h2>&#x1F4D3; Log your receipts</h2>
+  <p class="small">Record each business purchase as it happens. Keep the paper receipt (or scan) with this log for tax time.</p>
+
+  <table id="log">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Vendor</th>
+        <th>Description</th>
+        <th class="text-right">Amount</th>
+        <th>Category</th>
+        <th>Payment method</th>
+        <th style="width:40px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center">1</td>
+        <td><input type="date"></td>
+        <td><input type="text" placeholder="Vendor / store"></td>
+        <td><input type="text" placeholder="What was purchased"></td>
+        <td class="text-right"><input type="number" min="0" step="0.01" value="0.00"></td>
+        <td><input type="text" placeholder="Office supplies"></td>
+        <td><input type="text" placeholder="Card / cash"></td>
+        <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="small add-row">Tip: add rows before printing, or print blank rows to fill in by hand.</p>
+  <button type="button" class="primary no-print" onclick="addRow()">&#x271a; Add receipt row</button>
+
+  <div class="totals" style="justify-content:flex-end;">
+    <div class="item grand">
+      <span class="label">Total spend</span>
+      <span class="value" id="total">$0.00</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>&#x1F4CC; Year-to-date summary (fill in at tax time)</h2>
+  <div class="grid">
+    <div class="field">
+      <label>Total business spend</label>
+      <input type="number" min="0" step="0.01" value="0.00">
+    </div>
+    <div class="field">
+      <label>Tax year</label>
+      <input type="text" value="2026">
+    </div>
+    <div class="field full">
+      <label>Notes</label>
+      <textarea placeholder="Notes for your bookkeeper or tax preparer"></textarea>
+    </div>
+  </div>
+</div>
+
+<footer class="no-print">
+  <p class="footer-note">Generated locally in your browser &mdash; nothing is sent anywhere. Print (Ctrl+P / Cmd+P) or save as PDF.</p>
+  <p class="footer-note small">Free Invoice &amp; Receipt Kit &mdash; Asdale Dynamics, LLC. MIT License.</p>
+</footer>
+
+<div class="controls no-print">
+  <button type="button" class="primary" onclick="window.print()">&#x1F5A8; Print receipt log</button>
+</div>
+
+<script>
+function money(v) { return '$' + Number(v || 0).toFixed(2); }
+
+function calcTotals() {
+  let total = 0;
+  document.querySelectorAll('#log tbody tr').forEach((row, i) => {
+    row.querySelector('td:nth-child(1)').textContent = i + 1;
+    total += Number(row.querySelector('td:nth-child(5) input').value) || 0;
+  });
+  document.getElementById('total').textContent = money(total);
+}
+
+document.querySelectorAll('#log input').forEach(input => {
+  input.addEventListener('input', calcTotals);
+});
+
+function addRow() {
+  const tbody = document.querySelector('#log tbody');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="text-center"></td>
+    <td><input type="date"></td>
+    <td><input type="text" placeholder="Vendor / store"></td>
+    <td><input type="text" placeholder="What was purchased"></td>
+    <td class="text-right"><input type="number" min="0" step="0.01" value="0.00"></td>
+    <td><input type="text" placeholder="Office supplies"></td>
+    <td><input type="text" placeholder="Card / cash"></td>
+    <td class="text-center"><button type="button" class="no-print" onclick="removeRow(this)">&#x2715;</button></td>
+  `;
+  tbody.appendChild(tr);
+  tr.querySelectorAll('input').forEach(input => input.addEventListener('input', calcTotals));
+  tr.querySelector('input[type="text"]').focus();
+  calcTotals();
+}
+
+function removeRow(btn) {
+  const tr = btn.closest('tr');
+  const tbody = document.querySelector('#log tbody');
+  if (tbody.rows.length > 1) tr.remove();
+  calcTotals();
+}
+
+calcTotals();
+</script>
+
+</body>
+</html>
